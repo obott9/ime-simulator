@@ -1,112 +1,130 @@
-import { useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function AnalogClock({ size, backgroundColor, textColor, showDate }) {
-  const canvasRef = useRef(null);
+export default function AnalogClock({ size, analogColor, showSeconds }) {
+  const [now, setNow] = useState(new Date());
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    const dpr = window.devicePixelRatio || 1;
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
-    canvas.width = size * dpr;
-    canvas.height = size * dpr;
-    ctx.scale(dpr, dpr);
+  const hours = now.getHours() % 12;
+  const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
 
-    let animationId;
+  const hourAngle = (hours + minutes / 60) * 30;
+  const minuteAngle = (minutes + seconds / 60) * 6;
+  const secondAngle = seconds * 6;
 
-    function draw() {
-      const now = new Date();
-      const cx = size / 2;
-      const cy = size / 2;
-      const radius = size / 2 - 4;
-
-      ctx.clearRect(0, 0, size, size);
-
-      // Background circle
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.fillStyle = backgroundColor;
-      ctx.fill();
-
-      // Hour numbers
-      ctx.fillStyle = textColor;
-      ctx.font = `${Math.max(10, size / 12)}px system-ui`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      for (let i = 1; i <= 12; i++) {
-        const angle = (i * Math.PI) / 6 - Math.PI / 2;
-        const numRadius = radius * 0.78;
-        const x = cx + Math.cos(angle) * numRadius;
-        const y = cy + Math.sin(angle) * numRadius;
-        ctx.fillText(i.toString(), x, y);
-      }
-
-      // Tick marks
-      for (let i = 0; i < 60; i++) {
-        const angle = (i * Math.PI) / 30 - Math.PI / 2;
-        const isHour = i % 5 === 0;
-        const innerR = radius * (isHour ? 0.88 : 0.92);
-        const outerR = radius * 0.95;
-        ctx.beginPath();
-        ctx.moveTo(cx + Math.cos(angle) * innerR, cy + Math.sin(angle) * innerR);
-        ctx.lineTo(cx + Math.cos(angle) * outerR, cy + Math.sin(angle) * outerR);
-        ctx.strokeStyle = textColor;
-        ctx.lineWidth = isHour ? 2 : 1;
-        ctx.stroke();
-      }
-
-      const hours = now.getHours() % 12;
-      const minutes = now.getMinutes();
-      const seconds = now.getSeconds();
-
-      // Hour hand
-      const hourAngle = ((hours + minutes / 60) * Math.PI) / 6 - Math.PI / 2;
-      drawHand(ctx, cx, cy, hourAngle, radius * 0.5, 3, textColor);
-
-      // Minute hand
-      const minuteAngle = ((minutes + seconds / 60) * Math.PI) / 30 - Math.PI / 2;
-      drawHand(ctx, cx, cy, minuteAngle, radius * 0.68, 2, textColor);
-
-      // Second hand
-      const secondAngle = (seconds * Math.PI) / 30 - Math.PI / 2;
-      drawHand(ctx, cx, cy, secondAngle, radius * 0.72, 1, '#ff4444');
-
-      // Center dot
-      ctx.beginPath();
-      ctx.arc(cx, cy, 3, 0, Math.PI * 2);
-      ctx.fillStyle = textColor;
-      ctx.fill();
-
-      // Date
-      if (showDate) {
-        const dateStr = `${now.getMonth() + 1}/${now.getDate()}`;
-        ctx.fillStyle = textColor;
-        ctx.font = `${Math.max(9, size / 14)}px system-ui`;
-        ctx.textAlign = 'center';
-        ctx.fillText(dateStr, cx, cy + radius * 0.35);
-      }
-
-      animationId = requestAnimationFrame(draw);
-    }
-
-    draw();
-    return () => cancelAnimationFrame(animationId);
-  }, [size, backgroundColor, textColor, showDate]);
+  const borderWidth = Math.max(1, size * 0.02);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{ width: size, height: size }}
-    />
-  );
-}
+    <div
+      style={{
+        position: 'relative',
+        width: size,
+        height: size,
+      }}
+    >
+      {/* Circle outline */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          borderRadius: '50%',
+          border: `${borderWidth}px solid ${analogColor}`,
+          boxSizing: 'border-box',
+        }}
+      />
 
-function drawHand(ctx, cx, cy, angle, length, width, color) {
-  ctx.beginPath();
-  ctx.moveTo(cx, cy);
-  ctx.lineTo(cx + Math.cos(angle) * length, cy + Math.sin(angle) * length);
-  ctx.strokeStyle = color;
-  ctx.lineWidth = width;
-  ctx.lineCap = 'round';
-  ctx.stroke();
+      {/* 12 hour markers (rectangles, no numbers) */}
+      {Array.from({ length: 12 }, (_, i) => (
+        <div
+          key={`tick-${i}`}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            transform: `rotate(${i * 30}deg)`,
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: size * 0.05,
+              width: size * 0.02,
+              height: size * 0.1,
+              transform: 'translateX(-50%)',
+              backgroundColor: analogColor,
+              borderRadius: 1,
+            }}
+          />
+        </div>
+      ))}
+
+      {/* Hour hand */}
+      <div style={{ position: 'absolute', inset: 0, transform: `rotate(${hourAngle}deg)` }}>
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            bottom: '50%',
+            width: size * 0.04,
+            height: size * 0.25,
+            transform: 'translateX(-50%)',
+            backgroundColor: analogColor,
+            borderRadius: 2,
+          }}
+        />
+      </div>
+
+      {/* Minute hand */}
+      <div style={{ position: 'absolute', inset: 0, transform: `rotate(${minuteAngle}deg)` }}>
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            bottom: '50%',
+            width: size * 0.03,
+            height: size * 0.35,
+            transform: 'translateX(-50%)',
+            backgroundColor: analogColor,
+            borderRadius: 2,
+          }}
+        />
+      </div>
+
+      {/* Second hand (only if showSeconds) */}
+      {showSeconds && (
+        <div style={{ position: 'absolute', inset: 0, transform: `rotate(${secondAngle}deg)` }}>
+          <div
+            style={{
+              position: 'absolute',
+              left: '50%',
+              bottom: '50%',
+              width: size * 0.01,
+              height: size * 0.4,
+              transform: 'translateX(-50%)',
+              backgroundColor: analogColor,
+              borderRadius: 1,
+            }}
+          />
+        </div>
+      )}
+
+      {/* Center dot */}
+      <div
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          width: size * 0.06,
+          height: size * 0.06,
+          borderRadius: '50%',
+          backgroundColor: analogColor,
+          transform: 'translate(-50%, -50%)',
+        }}
+      />
+    </div>
+  );
 }

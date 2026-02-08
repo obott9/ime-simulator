@@ -2,20 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatDate, formatTime } from '../lib/dateFormat';
 
-export default function DigitalClock({
-  width,
-  height,
-  textColor,
-  font,
-  fontSize,
-  dateTimePosition,
-  dateFormatStyle,
-  timeFormatStyle,
-  customDateFormat1,
-  customDateFormat2,
-  customTimeFormat1,
-  customTimeFormat2,
-}) {
+export default function ClockOverlayText({ clock }) {
   const { i18n } = useTranslation();
   const [now, setNow] = useState(new Date());
 
@@ -23,6 +10,19 @@ export default function DigitalClock({
     const timer = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  const {
+    dateTimePosition,
+    dateFormatStyle,
+    timeFormatStyle,
+    customDateFormat1,
+    customDateFormat2,
+    customTimeFormat1,
+    customTimeFormat2,
+    textColor,
+    font,
+    fontSize,
+  } = clock;
 
   const locale = i18n.language;
   const dateStr = formatDate(now, dateFormatStyle, customDateFormat1, customDateFormat2, locale);
@@ -37,9 +37,8 @@ export default function DigitalClock({
     <span
       key="date"
       style={{
-        color: textColor,
-        fontFamily: font,
         fontSize: `${fontSize}px`,
+        whiteSpace: 'nowrap',
       }}
     >
       {dateStr}
@@ -50,9 +49,8 @@ export default function DigitalClock({
     <span
       key="time"
       style={{
-        color: textColor,
-        fontFamily: font,
         fontSize: `${fontSize}px`,
+        whiteSpace: 'nowrap',
       }}
     >
       {timeStr}
@@ -63,12 +61,13 @@ export default function DigitalClock({
 
   return (
     <div
-      className={`flex items-center justify-center ${
-        isHorizontal ? 'flex-row gap-3' : 'flex-col gap-1'
+      className={`absolute inset-0 flex items-center justify-center pointer-events-none ${
+        isHorizontal ? 'flex-row gap-2' : 'flex-col gap-0.5'
       }`}
       style={{
-        width,
-        height,
+        color: textColor,
+        fontFamily: font,
+        textShadow: '0 1px 3px rgba(0,0,0,0.6)',
       }}
     >
       {elements}

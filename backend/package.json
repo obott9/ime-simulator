@@ -1,0 +1,24 @@
+{
+  "name": "ime-simulator-backend",
+  "description": "IME Indicator Clock Simulator — Backend API",
+  "version": "1.0.0",
+  "private": true,
+  "author": "obote",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "node --env-file=.env --watch src/index.js",
+    "start": "node src/index.js",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.4",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.0",
+    "globals": "^17.3.0"
+  }
+}
