@@ -3,18 +3,9 @@ import AnalogClock from './AnalogClock';
 import DigitalClock from './DigitalClock';
 import ClockOverlayText from './ClockOverlayText';
 
-function hexToRgba(hex, alpha) {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
 export default function ClockPreview({ settings, backgroundColor }) {
   const { t } = useTranslation();
   const clock = settings.clock;
-  const bgWithOpacity = hexToRgba(backgroundColor, clock.bgOpacity / 100);
-
   return (
     <div className="flex flex-col items-center gap-3">
       <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
@@ -26,7 +17,8 @@ export default function ClockPreview({ settings, backgroundColor }) {
           width: clock.windowWidth,
           height: clock.windowHeight,
           borderRadius: 10,
-          backgroundColor: bgWithOpacity,
+          backgroundColor: backgroundColor,
+          opacity: clock.bgOpacity / 100,
         }}
       >
         {clock.mode === 'analog' ? (

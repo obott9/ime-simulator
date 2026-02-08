@@ -29,7 +29,7 @@ export default function IMEIndicator({
           position: 'absolute',
           inset: 0,
           borderRadius: '50%',
-          background: `radial-gradient(circle, ${hexToRgba(color, 0.6)}, ${hexToRgba(color, 0.3)}, transparent)`,
+          background: `radial-gradient(circle, ${hexToRgba(color, op * 0.6)}, ${hexToRgba(color, op * 0.3)}, transparent)`,
         }}
       />
 
