@@ -30,7 +30,7 @@
     "bgColorOff": "背景 (IME OFF):",
     "bgColorOn": "背景 (IME ON):",
     "useIndicatorColors": "IMEインジケータの言語別色を使用",
-    "opacity": "透過度:",
+    "opacity": "不透明度:",
     "width": "幅:",
     "height": "高さ:",
     "analogSize": "アナログ:",
@@ -73,7 +73,7 @@
     "textLarge": "大",
     "textLabel": "テキスト",
     "colorLabel": "色",
-    "opacity": "透過度:",
+    "opacity": "不透明度:",
     "reset": "リセット"
   },
   "presets": {
