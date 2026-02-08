@@ -37,6 +37,9 @@ export default function useAuth() {
   const signInWithGitHub = useCallback(async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
+      options: {
+        redirectTo: window.location.origin + window.location.pathname,
+      },
     });
     if (error) throw error;
     return data;
