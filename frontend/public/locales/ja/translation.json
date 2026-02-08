@@ -94,7 +94,9 @@
     "modified": "変更あり",
     "namePlaceholder": "プリセット名",
     "noMyPresets": "保存済みプリセットはありません。",
-    "loginToSave": "プリセットの保存・共有にはログインが必要です。"
+    "loginToSave": "プリセットの保存・共有にはログインが必要です。",
+    "connecting": "サーバーに接続中...",
+    "coldStartNote": "初回接続には最大30秒ほどかかる場合があります"
   },
   "auth": {
     "signIn": "ログイン",

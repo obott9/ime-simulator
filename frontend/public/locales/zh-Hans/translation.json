@@ -94,7 +94,9 @@
     "modified": "已修改",
     "namePlaceholder": "预设名称",
     "noMyPresets": "尚无已保存的预设。",
-    "loginToSave": "登录后可保存和分享预设。"
+    "loginToSave": "登录后可保存和分享预设。",
+    "connecting": "正在连接服务器...",
+    "coldStartNote": "首次连接可能需要最多30秒"
   },
   "auth": {
     "signIn": "登录",

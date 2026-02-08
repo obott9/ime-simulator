@@ -94,7 +94,9 @@
     "modified": "수정됨",
     "namePlaceholder": "프리셋 이름",
     "noMyPresets": "저장된 프리셋이 없습니다.",
-    "loginToSave": "프리셋을 저장하고 공유하려면 로그인하세요."
+    "loginToSave": "프리셋을 저장하고 공유하려면 로그인하세요.",
+    "connecting": "서버에 연결 중...",
+    "coldStartNote": "첫 연결은 최대 30초 정도 걸릴 수 있습니다"
   },
   "auth": {
     "signIn": "로그인",

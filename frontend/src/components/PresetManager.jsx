@@ -138,8 +138,9 @@ export default function PresetManager({
                 <button
                   onClick={() => handleUpdate(preset)}
                   disabled={operationLoading === preset.id}
-                  className="px-2 py-1 text-xs bg-green-600/80 text-white rounded hover:bg-green-600 cursor-pointer transition-colors disabled:opacity-50"
+                  className="px-2 py-1 text-xs bg-green-600/80 text-white rounded hover:bg-green-600 cursor-pointer transition-colors disabled:opacity-50 flex items-center gap-1"
                 >
+                  {operationLoading === preset.id && <Spinner />}
                   {t('presets.update')}
                 </button>
               )}
@@ -151,9 +152,13 @@ export default function PresetManager({
                 className="p-1 text-gray-500 hover:text-blue-400 cursor-pointer transition-colors disabled:opacity-50"
                 title={t('presets.share')}
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                </svg>
+                {operationLoading === preset.id ? (
+                  <Spinner />
+                ) : (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  </svg>
+                )}
               </button>
 
               {/* Delete button */}
@@ -174,10 +179,16 @@ export default function PresetManager({
     );
   };
 
+  const Spinner = () => (
+    <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+  );
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
+      <div className="flex flex-col items-center justify-center py-12 gap-3">
         <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+        <p className="text-sm text-gray-400">{t('presets.connecting')}</p>
+        <p className="text-xs text-gray-600">{t('presets.coldStartNote')}</p>
       </div>
     );
   }
@@ -210,8 +221,9 @@ export default function PresetManager({
               <button
                 onClick={handleSave}
                 disabled={!saveName.trim() || operationLoading === 'save'}
-                className="px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-500 disabled:opacity-50 cursor-pointer transition-colors"
+                className="px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-500 disabled:opacity-50 cursor-pointer transition-colors flex items-center gap-1.5"
               >
+                {operationLoading === 'save' && <Spinner />}
                 {t('presets.save')}
               </button>
             </div>

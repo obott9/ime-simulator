@@ -94,7 +94,9 @@
     "modified": "Modified",
     "namePlaceholder": "Preset name",
     "noMyPresets": "No saved presets yet.",
-    "loginToSave": "Sign in to save and share presets."
+    "loginToSave": "Sign in to save and share presets.",
+    "connecting": "Connecting to server...",
+    "coldStartNote": "First connection may take up to 30 seconds"
   },
   "auth": {
     "signIn": "Sign In",
