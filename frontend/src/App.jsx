@@ -26,6 +26,7 @@ export default function App() {
     updateIndicatorText,
     resetSettings,
     loadPreset,
+    markClean,
     activePresetId,
     isDirty,
   } = useSettings();
@@ -71,7 +72,7 @@ export default function App() {
     isDirty,
     onLoad: loadPreset,
     onSave: savePreset,
-    onUpdate: updatePreset,
+    onUpdate: async (id, name, s) => { await updatePreset(id, name, s); markClean(); },
     onDelete: deletePreset,
     onShare: sharePreset,
     onLike: toggleLike,

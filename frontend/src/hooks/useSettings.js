@@ -110,6 +110,11 @@ export default function useSettings() {
     snapshotRef.current = JSON.stringify(presetSettings);
   }, []);
 
+  const markClean = useCallback(() => {
+    setIsDirty(false);
+    snapshotRef.current = JSON.stringify(settings);
+  }, [settings]);
+
   const resetSettings = useCallback(() => {
     setSettings(DEFAULT_SETTINGS);
     setCurrentLang('ja');
@@ -134,6 +139,7 @@ export default function useSettings() {
     updateIndicatorText,
     resetSettings,
     loadPreset,
+    markClean,
     activePresetId,
     isDirty,
   };
