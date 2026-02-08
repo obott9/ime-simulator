@@ -15,6 +15,7 @@ export default function PresetManager({
   onLoad,
   onSave,
   onUpdate,
+  onUpdateDone,
   onDelete,
   onShare,
   onLike,
@@ -43,8 +44,9 @@ export default function PresetManager({
     setOperationLoading(preset.id);
     try {
       await onUpdate(preset.id, preset.name, settings);
-    } catch {
-      // error handled upstream
+      if (onUpdateDone) onUpdateDone();
+    } catch (err) {
+      console.error('Preset update failed:', err);
     }
     setOperationLoading(null);
   };
