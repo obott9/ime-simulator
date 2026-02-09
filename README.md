@@ -1,9 +1,14 @@
-# IME Indicator Clock Simulator
+# IME Indicator Clock — Web Settings Simulator
 
-macOS アプリ [IME Indicator Clock](https://obott9.github.io/imeindicatorclock.html) のWebシミュレーター。
-時計ウインドウとIMEインジケータの外観をブラウザ上でプレビュー・カスタマイズできます。
+A full-stack web application for previewing and customizing [IMEIndicatorClock](https://github.com/obott9/IMEIndicatorClock) settings in the browser. Users can adjust clock styles, IME indicator colors, and share their presets with others.
 
 **Live Demo:** https://obott9.github.io/ime-simulator/
+
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-5-000000?logo=express&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?logo=supabase&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite&logoColor=white)
 
 ## Architecture
 
@@ -18,7 +23,7 @@ Browser ─── GitHub Pages (Frontend)
 | Frontend | React 19 + Vite 7 + Tailwind CSS 4 | GitHub Pages |
 | Backend | Express 5 + Node.js 22 | Render (Docker) |
 | Database | Supabase (PostgreSQL) | Supabase Cloud |
-| Auth | Supabase Auth (Email + GitHub OAuth) | Supabase Cloud |
+| Auth | Supabase Auth (GitHub OAuth) | Supabase Cloud |
 
 ## Features
 
@@ -28,6 +33,81 @@ Browser ─── GitHub Pages (Frontend)
 - プリセット保存・共有・いいね
 - 5言語対応（日本語・英語・韓国語・中国語簡体字・中国語繁体字）
 - ロケール対応の日付・時刻表示
+
+## API Endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | `/api/presets/default` | No | デフォルトプリセット一覧 |
+| GET | `/api/presets/popular` | No | 人気プリセット一覧 |
+| GET | `/api/presets/mine` | Yes | 自分のプリセット一覧 |
+| GET | `/api/presets/likes` | Yes | いいねしたプリセット |
+| GET | `/api/presets/share/:code` | No | 共有コードでプリセット取得 |
+| GET | `/api/presets/:id` | No | プリセット詳細 |
+| POST | `/api/presets` | Yes | プリセット作成 |
+| PUT | `/api/presets/:id` | Yes | プリセット更新 |
+| DELETE | `/api/presets/:id` | Yes | プリセット削除 |
+| POST | `/api/presets/:id/share` | Yes | 共有コード生成 |
+| POST | `/api/presets/:id/like` | Yes | いいね切替 |
+
+## Project Structure
+
+```
+ime-simulator/
+├── frontend/                  # React + Vite
+│   ├── src/
+│   │   ├── components/        # UI コンポーネント
+│   │   │   ├── AnalogClock.jsx
+│   │   │   ├── AuthModal.jsx
+│   │   │   ├── ClockOverlayText.jsx
+│   │   │   ├── ClockPreview.jsx
+│   │   │   ├── ClockSettings.jsx
+│   │   │   ├── DigitalClock.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── Header.jsx
+│   │   │   ├── IMEIndicator.jsx
+│   │   │   ├── IndicatorSettings.jsx
+│   │   │   ├── LanguageSwitcher.jsx
+│   │   │   ├── PresetManager.jsx
+│   │   │   ├── SettingsPanel.jsx
+│   │   │   └── ShareDialog.jsx
+│   │   ├── contexts/          # React Context
+│   │   │   └── AuthContext.jsx
+│   │   ├── hooks/             # カスタムフック
+│   │   │   ├── useAuth.js
+│   │   │   ├── usePresets.js
+│   │   │   └── useSettings.js
+│   │   ├── lib/               # ユーティリティ
+│   │   │   ├── api.js
+│   │   │   ├── dateFormat.js
+│   │   │   └── supabase.js
+│   │   ├── i18n.js
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── public/
+│   │   └── locales/           # 翻訳ファイル (5言語)
+│   │       ├── en/
+│   │       ├── ja/
+│   │       ├── ko/
+│   │       ├── zh-Hans/
+│   │       └── zh-Hant/
+│   └── vite.config.js
+├── backend/                   # Node.js + Express
+│   ├── src/
+│   │   ├── index.js
+│   │   ├── lib/
+│   │   │   └── supabase.js
+│   │   ├── middleware/
+│   │   │   └── auth.js
+│   │   └── routes/
+│   │       └── presets.js
+│   └── Dockerfile
+├── .github/
+│   └── workflows/
+│       └── deploy.yml         # GitHub Pages デプロイ
+├── supabase-setup.sql         # DB スキーマ + シードデータ
+└── README.md
+```
 
 ## Design Decisions
 
@@ -63,6 +143,7 @@ Browser ─── GitHub Pages (Frontend)
 
 - Node.js 22+
 - Supabase プロジェクト
+- GitHub OAuth App
 
 ### Frontend
 
@@ -106,3 +187,18 @@ npm run dev
 | `SUPABASE_SERVICE_KEY` | Supabase service_role キー |
 | `CORS_ORIGIN` | 許可するオリジン (カンマ区切り) |
 | `PORT` | サーバーポート (デフォルト: 3001) |
+
+## Related Projects
+
+- [IMEIndicatorClock](https://github.com/obott9/IMEIndicatorClock) — macOS desktop app (Swift/SwiftUI)
+- [IMEIndicatorClockW](https://github.com/obott9/IMEIndicatorClockW) — Windows desktop app (C#/.NET 8)
+
+## License
+
+MIT License — © 2026 Hideki Obote
+
+## Author
+
+**Hideki Obote** — Senior Software Engineer with 35+ years of experience in cross-platform desktop development (Swift, C#/.NET). This project demonstrates full-stack web capabilities alongside native desktop expertise.
+
+[Portfolio](https://obott9.github.io) | [GitHub](https://github.com/obott9) | [LinkedIn](https://www.linkedin.com/in/hideki-obote-1b33b43a7/)
