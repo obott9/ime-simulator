@@ -24,6 +24,15 @@ export default function Footer() {
       >
         GitHub
       </a>
+      <span className="text-gray-700">|</span>
+      <a
+        href="https://github.com/sponsors/obott9"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-red-400 hover:text-red-300 transition-colors"
+      >
+        ❤️ Sponsor
+      </a>
     </footer>
   );
 }

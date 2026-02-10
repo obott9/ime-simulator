@@ -1,3 +1,5 @@
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-red?logo=github)](https://github.com/sponsors/obott9)
+
 # IME Indicator Clock — Web Settings Simulator
 
 A full-stack web application for previewing and customizing [IMEIndicatorClock](https://github.com/obott9/IMEIndicatorClock) settings in the browser. Users can adjust clock styles, IME indicator colors, and share their presets with others.
