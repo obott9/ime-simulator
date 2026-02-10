@@ -131,7 +131,7 @@ export default function IndicatorSettings({
             <span className="text-sm text-gray-500">{opacity}%</span>
           </div>
           <input
-            type="range" min="0" max="100" value={opacity}
+            type="range" min="10" max="100" value={opacity}
             onChange={(e) => onUpdate('opacity', Number(e.target.value))}
             className="w-full accent-blue-500"
           />

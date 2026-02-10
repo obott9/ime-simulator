@@ -328,7 +328,7 @@ export default function ClockSettings({ settings, onUpdate }) {
             <label className="text-sm text-gray-400">{t('clock.opacity')}</label>
             <span className="text-sm text-gray-500">{bgOpacity}%</span>
           </div>
-          <input type="range" min="0" max="100" value={bgOpacity}
+          <input type="range" min="10" max="100" value={bgOpacity}
             onChange={(e) => onUpdate('bgOpacity', Number(e.target.value))}
             className="w-full accent-blue-500"
           />

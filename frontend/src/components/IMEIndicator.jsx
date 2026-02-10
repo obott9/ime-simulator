@@ -21,6 +21,7 @@ export default function IMEIndicator({
         position: 'relative',
         width: size,
         height: size,
+        opacity: op,
       }}
     >
       {/* Layer 1: Outer glow (radial gradient) */}
@@ -29,7 +30,7 @@ export default function IMEIndicator({
           position: 'absolute',
           inset: 0,
           borderRadius: '50%',
-          background: `radial-gradient(circle, ${hexToRgba(color, op * 0.6)}, ${hexToRgba(color, op * 0.3)}, transparent)`,
+          background: `radial-gradient(circle, ${hexToRgba(color, 0.6)}, ${hexToRgba(color, 0.3)}, transparent)`,
         }}
       />
 
@@ -42,7 +43,7 @@ export default function IMEIndicator({
           width: '80%',
           height: '80%',
           borderRadius: '50%',
-          background: `linear-gradient(to bottom right, ${hexToRgba(color, op)}, ${hexToRgba(color, op * 0.7)})`,
+          background: `linear-gradient(to bottom right, ${color}, ${hexToRgba(color, 0.7)})`,
           border: '2px solid rgba(255, 255, 255, 0.3)',
           boxSizing: 'border-box',
         }}
