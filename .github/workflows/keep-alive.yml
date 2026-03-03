@@ -30,10 +30,12 @@ jobs:
             -o /dev/null || true
           echo "Auth endpoint pinged"
 
-      - name: Ping Supabase Health Check
+      - name: Ping Supabase REST API (count)
         run: |
           curl -sf --retry 3 --retry-delay 10 --retry-all-errors \
-            "${{ secrets.VITE_SUPABASE_URL }}/rest/v1/" \
+            "${{ secrets.VITE_SUPABASE_URL }}/rest/v1/presets?select=count" \
             -H "apikey: ${{ secrets.VITE_SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.VITE_SUPABASE_ANON_KEY }}" \
+            -H "Prefer: count=exact" \
             -o /dev/null
-          echo "Health check successful"
+          echo "Count query successful"
