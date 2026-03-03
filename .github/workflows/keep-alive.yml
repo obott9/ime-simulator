@@ -2,19 +2,38 @@ name: Keep Supabase Alive
 
 on:
   schedule:
-    # 5日ごと（UTC 0:00）に実行
-    - cron: '0 0 */5 * *'
+    # 3日ごと（UTC 0:00）に実行
+    - cron: '0 0 */3 * *'
   workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Supabase
+      - name: Ping Supabase REST API (read)
         run: |
           curl -sf --retry 3 --retry-delay 10 --retry-all-errors \
-            "${{ secrets.VITE_SUPABASE_URL }}/rest/v1/presets?select=id&limit=1" \
+            "${{ secrets.VITE_SUPABASE_URL }}/rest/v1/presets?select=id,name&limit=1" \
             -H "apikey: ${{ secrets.VITE_SUPABASE_ANON_KEY }}" \
             -H "Authorization: Bearer ${{ secrets.VITE_SUPABASE_ANON_KEY }}" \
             -o /dev/null
-          echo "Supabase pinged successfully"
+          echo "REST API ping successful"
+
+      - name: Ping Supabase Auth (write activity)
+        run: |
+          # OTP signup attempt generates auth DB write activity
+          curl -sf --retry 3 --retry-delay 10 --retry-all-errors \
+            "${{ secrets.VITE_SUPABASE_URL }}/auth/v1/otp" \
+            -H "apikey: ${{ secrets.VITE_SUPABASE_ANON_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{"email":"keepalive@example.com"}' \
+            -o /dev/null || true
+          echo "Auth endpoint pinged"
+
+      - name: Ping Supabase Health Check
+        run: |
+          curl -sf --retry 3 --retry-delay 10 --retry-all-errors \
+            "${{ secrets.VITE_SUPABASE_URL }}/rest/v1/" \
+            -H "apikey: ${{ secrets.VITE_SUPABASE_ANON_KEY }}" \
+            -o /dev/null
+          echo "Health check successful"
